@@ -42,7 +42,7 @@ namespace libVT100.Tests
         [Test]
         public void TestNormalCharactersAreJustPassedThrough ()
         {
-            Input ( new byte[] { (byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E' } );
+            (this as IDecoder).Input ( new byte[] { (byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E' } );
             
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
         }
@@ -50,7 +50,7 @@ namespace libVT100.Tests
         [Test]
         public void TestCommandsAreNotInterpretedAsNormalCharacters ()
         {
-            Input ( new byte[] { (byte) 'A', (byte) 'B', 0x1B, (byte) '1', (byte) '2', (byte) '3', (byte) 'm', (byte) 'C', (byte) 'D', (byte) 'E' } );
+            (this as IDecoder).Input ( new byte[] { (byte) 'A', (byte) 'B', 0x1B, (byte) '1', (byte) '2', (byte) '3', (byte) 'm', (byte) 'C', (byte) 'D', (byte) 'E' } );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
             
             Input ( "\x001B123mA" );
@@ -110,7 +110,7 @@ namespace libVT100.Tests
                 data[i] = (byte) c;
                 i++;
             }
-            Input ( data );
+            (this as IDecoder).Input ( data );
         }
         
         private String ReceivedCharacters
@@ -136,5 +136,7 @@ namespace libVT100.Tests
         {
             m_chars.Add ( _chars );
         }
+        
+        override public event DecoderOutputDelegate Output;
     }
 }

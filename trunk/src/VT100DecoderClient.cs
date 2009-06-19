@@ -55,7 +55,7 @@ namespace libVT100
         {
         }
         
-        void IVT100DecoderClient.MoveCursorTo ( IVT100Decoder _sender, int _row, int _column )
+        void IVT100DecoderClient.MoveCursorTo ( IVT100Decoder _sender, Point _position )
         {
         }
         
@@ -92,6 +92,10 @@ namespace libVT100
             return Point.Empty;
         }
 
+        void IVT100DecoderClient.SetGraphicRendition ( IVT100Decoder _sender, GraphicRendition[] _commands )
+        {
+        }
+        
         void IDisposable.Dispose ()
         {
             Characters = null;
