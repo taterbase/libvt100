@@ -38,6 +38,8 @@ namespace libVT100
         Inverse = 7,
         /// Conceal     not widely supported
         Conceal = 8,
+        /// Font selection (not sure which)
+        Font1 = 10,
         /// Underline: Double
         UnderlineDouble = 21,
         /// Intensity: Normal     not bold and not faint
