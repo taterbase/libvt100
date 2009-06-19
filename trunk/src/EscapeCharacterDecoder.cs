@@ -152,36 +152,45 @@ namespace libVT100
                 String parameter = new String ( parameterChars );
                 
                 byte command = m_commandBuffer[end];
-                
-                ProcessCommand ( command, parameter );
-                
-                //System.Console.WriteLine ( "Remove the processed commands" );
-                
-                // Remove the processed commands
-                if ( m_commandBuffer.Count == end - 1 )
+
+                try
                 {
-                    // All command bytes processed, we can go back to normal handling
-                    m_commandBuffer.Clear();
-                    m_state = State.Normal;
+                   ProcessCommand( command, parameter );
                 }
-                else
+                finally
                 {
-                    for ( int i = end + 1; i < m_commandBuffer.Count; i++ )
-                    {
-                        if ( m_commandBuffer[i] == EscapeCharacter )
-                        {
-                            m_commandBuffer.RemoveRange ( 0, i );
-                            ProcessCommandBuffer ();
-                            return;
-                        }
-                        else
-                        {
-                            ProcessNormalInput ( m_commandBuffer[i] );
-                        }
-                    }
-                    m_commandBuffer.Clear ();
-                    
-                    m_state = State.Normal;
+                   //System.Console.WriteLine ( "Remove the processed commands" );
+
+                   // Remove the processed commands
+                   if ( m_commandBuffer.Count == end - 1 )
+                   {
+                      // All command bytes processed, we can go back to normal handling
+                      m_commandBuffer.Clear();
+                      m_state = State.Normal;
+                   }
+                   else
+                   {
+                      bool returnToNormalState = true;
+                      for ( int i = end + 1 ; i < m_commandBuffer.Count ; i++ )
+                      {
+                         if ( m_commandBuffer[i] == EscapeCharacter )
+                         {
+                            m_commandBuffer.RemoveRange( 0, i );
+                            ProcessCommandBuffer();
+                            returnToNormalState = false;
+                         }
+                         else
+                         {
+                            ProcessNormalInput( m_commandBuffer[i] );
+                         }
+                      }
+                      if ( returnToNormalState )
+                      {
+                         m_commandBuffer.Clear();
+
+                         m_state = State.Normal;
+                      }
+                   }
                 }
             }
         }
@@ -296,8 +305,9 @@ namespace libVT100
           OnOutput( data );
        }
        
-       void IDecoder.KeyPressed( Keys _modifiers, Keys _key )
+       bool IDecoder.KeyPressed( Keys _modifiers, Keys _key )
        {
+          return false;
        }
 
         void IDisposable.Dispose ()

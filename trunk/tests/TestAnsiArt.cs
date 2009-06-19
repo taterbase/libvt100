@@ -28,8 +28,8 @@ namespace libVT100.Tests
         [Test]
         public void TestUnixProgramOutput ()
         {
-            ReadAndRenderFile ( "../tests/mc.output", Encoding.UTF8, new Size(65, 180) );
-            ReadAndRenderFile ( "../tests/ls.output", Encoding.UTF8, new Size(65, 10) );
+           ReadAndRenderFile ( "../tests/mc.output", Encoding.UTF8, new Size(180, 65) );
+           ReadAndRenderFile ( "../tests/ls.output", Encoding.UTF8, new Size(65, 10) );
         }
         
         public void ReadAndRenderFileAll ( string _filename, Size _size )
