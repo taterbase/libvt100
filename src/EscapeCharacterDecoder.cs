@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace libVT100
 {
-    public class VT100 : IVT100
+    public abstract class EscapeCharacterDecoder
     {
         public const byte EscapeCharacter = 0x1B;
         public const byte LeftBracketCharacter = 0x5B;
@@ -15,13 +15,12 @@ namespace libVT100
             Command,
         }
         protected State m_state;
-        protected List<IVT100Client> m_listeners;
         protected Encoding m_encoding;
         protected Decoder m_decoder;
         protected Encoder m_encoder;
         protected List<byte> m_commandBuffer;
         
-        Encoding IVT100.Encoding
+        Encoding Encoding
         {
             get
             {
@@ -38,11 +37,10 @@ namespace libVT100
             }
         }
         
-        public VT100 ()
+        public EscapeCharacterDecoder ()
         {
-            m_listeners = new List<IVT100Client> ();
             m_state = State.Normal;
-            (this as IVT100).Encoding = Encoding.ASCII;
+            Encoding = Encoding.ASCII;
             m_commandBuffer = new List<byte>();
         }
         
@@ -99,7 +97,7 @@ namespace libVT100
                     return;
                 }
                 
-                Decoder decoder = (this as IVT100).Encoding.GetDecoder();
+                Decoder decoder = Encoding.GetDecoder();
                 byte[] parameterData = new byte[end - start];
                 for ( int i = 0; i < parameterData.Length; i++ )
                 {
@@ -164,13 +162,7 @@ namespace libVT100
             }
         }
         
-        virtual protected void ProcessCommand ( byte _command, String _parameter )
-        {
-            System.Console.WriteLine ( "ProcessCommand: {0} {1}", (char) _command, _parameter );
-            
-        }
-        
-        void IVT100.Input ( byte[] _data )
+        protected void Input ( byte[] _data )
         {
             System.Console.Write ( "Input[{0}]: ", m_state );
             foreach ( byte b in _data )
@@ -219,30 +211,7 @@ namespace libVT100
             }
         }
         
-        void IVT100.Subscribe ( IVT100Client _client )
-        {
-            m_listeners.Add ( _client );
-        }
-
-        void IVT100.UnSubscribe ( IVT100Client _client )
-        {
-            m_listeners.Remove ( _client );
-        }
-        
-        void IDisposable.Dispose ()
-        {
-            m_listeners.Clear();
-            m_listeners = null;
-        }
-        
-        protected virtual void OnCharacters ( char[] _characters )
-        {
-            //System.Console.WriteLine ( "OnCharacters: {0} characters", _characters.Length );
-            
-            foreach ( IVT100Client client in m_listeners )
-            {
-                client.Characters ( this, _characters );
-            }
-        }
+        abstract protected void OnCharacters ( char[] _characters );
+        abstract protected void ProcessCommand ( byte _command, String _parameter );
     }
 }

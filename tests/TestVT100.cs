@@ -11,25 +11,25 @@ namespace libVT100.Tests
     public class TestVT100
     {
         private List<char[]> m_chars;
-        private IVT100 m_vt100;
-        private VT100Client m_client;
+        private IVT100Decoder m_vt100;
+        private VT100DecoderClient m_client;
         
         [SetUp]
         public void SetUp ()
         {
-            m_vt100 = new VT100 ();
-            m_client = new VT100Client();
+            m_vt100 = new VT100Decoder ();
+            m_client = new VT100DecoderClient();
             m_chars = new List<char[]>();
             
             m_vt100.Subscribe ( m_client );
             
-            m_client.Characters += new VT100Client.CharactersDelegate ( Characters );
+            m_client.Characters += new VT100DecoderClient.CharactersDelegate ( Characters );
         }
         
         [TearDown]
         public void TearDown ()
         {
-            m_client.Characters -= new VT100Client.CharactersDelegate ( Characters );
+            m_client.Characters -= new VT100DecoderClient.CharactersDelegate ( Characters );
             
             m_vt100.UnSubscribe ( m_client );
             
@@ -39,48 +39,6 @@ namespace libVT100.Tests
             m_client = null;
             m_vt100 = null;
             m_chars = null;
-        }
-        
-        [Test]
-        public void TestNormalCharactersAreJustPassedThrough ()
-        {
-            m_vt100.Input ( new byte[] { (byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E' } );
-            
-            Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-        }
-        
-        [Test]
-        public void TestCommandsAreNotInterpretedAsNormalCharacters ()
-        {
-            m_vt100.Input ( new byte[] { (byte) 'A', (byte) 'B', 0x1B, (byte) '1', (byte) '2', (byte) '3', (byte) 'm', (byte) 'C', (byte) 'D', (byte) 'E' } );
-            Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            
-            Input ( "\x001B123mA" );
-            Assert.AreEqual ( "A", ReceivedCharacters );
-            
-            Input ( "\x001B123m\x001B123mA" );
-            Input ( "A" );
-            Assert.AreEqual ( "AA", ReceivedCharacters );
-            
-            Input ( "AB\x001B123mCDE" );
-            Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            
-            Input ( "AB\x001B123m" );
-            Assert.AreEqual ( "AB", ReceivedCharacters );
-            
-            Input ( "A" );
-            Input ( "AB\x001B123mCDE\x001B123m\x001B123mCDE" );
-            Assert.AreEqual ( "AABCDECDE", ReceivedCharacters );
-
-            Input ( "A\x001B[123m\x001B[123mA" );
-            Input ( "A" );
-            Assert.AreEqual ( "AAA", ReceivedCharacters );
-            
-            Input ( "A\x001B123m\x001B[123mA" );
-            Assert.AreEqual ( "AA", ReceivedCharacters );
-
-            Input ( "A\x001B[123;321;456a\x001B[\"This string is part of the command\"123bA" );
-            Assert.AreEqual ( "AA", ReceivedCharacters );
         }
         
         private void Input ( String _input )
@@ -95,21 +53,7 @@ namespace libVT100.Tests
             m_vt100.Input ( data );
         }
         
-        private String ReceivedCharacters
-        {
-            get
-            {
-                StringBuilder builder = new StringBuilder();
-                foreach ( char[] chars in m_chars )
-                {
-                    builder.Append ( chars );
-                }
-                m_chars.Clear();
-                return builder.ToString();
-            }
-        }
-        
-        private void Characters ( VT100Client _client, char[] _chars )
+        private void Characters ( VT100DecoderClient _client, char[] _chars )
         {
             m_chars.Add ( _chars );
         }
