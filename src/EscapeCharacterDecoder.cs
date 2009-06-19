@@ -154,14 +154,19 @@ namespace libVT100
             }
                             
             byte[] data = new byte[] { _data };
-            int charCount = m_decoder.GetCharCount ( data, 0, 1 );
+            int charCount = m_decoder.GetCharCount ( data, 0, 1);
+            char[] characters = new char[charCount];
+            m_decoder.GetChars ( data, 0, 1, characters, 0 );
+            
             if ( charCount > 0 )
             {
-                char[] characters = new char[charCount];
-                m_decoder.GetChars ( data, 0, 1, characters, 0 );
-                
                 OnCharacters ( characters );
             }
+            else
+            {
+                System.Console.WriteLine ( "char count was zero" );
+            }
+
         }
         
         void IDecoder.Input ( byte[] _data )

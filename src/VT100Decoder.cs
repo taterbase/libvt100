@@ -39,7 +39,7 @@ namespace libVT100
                 return _default;
             }
             int ret;
-            if ( Int32.TryParse ( _value, out ret ) )
+            if ( Int32.TryParse ( _value.TrimStart('0'), out ret ) )
             {
                 return ret;
             }
@@ -79,7 +79,7 @@ namespace libVT100
                 break;
 
             case 'G':
-                OnMoveCursorToColumn ( DecodeInt(_parameter, 1) );
+                OnMoveCursorToColumn ( DecodeInt(_parameter, 1) - 1 );
                 break;
                 
             case 'H':
@@ -88,13 +88,13 @@ namespace libVT100
                     int separator = _parameter.IndexOf ( ';' );
                     if ( separator == -1 )
                     {
-                        OnMoveCursorTo ( new Point(1, 1) );
+                        OnMoveCursorTo ( new Point(0, 0) );
                     }
                     else
                     {
                         String row = _parameter.Substring ( 0, separator );
                         String column = _parameter.Substring ( separator + 1, _parameter.Length - separator - 1 );
-                        OnMoveCursorTo ( new Point(DecodeInt(row, 1), DecodeInt(column, 1)) );
+                        OnMoveCursorTo ( new Point(DecodeInt(row, 1) - 1, DecodeInt(column, 1) - 1) );
                     }
                 }
                 break;
@@ -117,11 +117,12 @@ namespace libVT100
 
             case 'm':
                 {
-                    String[] commands = _parameter.Split();
+                    String[] commands = _parameter.Split(';');
                     GraphicRendition[] renditionCommands = new GraphicRendition[commands.Length];
                     for ( int i = 0; i < commands.Length; ++i )
                     {
                         renditionCommands[i] = (GraphicRendition) DecodeInt(commands[i], 0);
+                        //System.Console.WriteLine ( "Rendition command: {0} = {1}", commands[i], renditionCommands[i]);
                     }
                     OnSetGraphicRendition ( renditionCommands );
                 }
@@ -131,6 +132,8 @@ namespace libVT100
                 if ( _parameter == "6" )
                 {
                     Point cursorPosition = OnGetCursorPosition();
+                    cursorPosition.X ++;
+                    cursorPosition.Y ++;
                     String row = cursorPosition.Y.ToString();
                     String column = cursorPosition.X.ToString();
                     byte[] output = new byte[2 + row.Length + 1 + column.Length + 1];

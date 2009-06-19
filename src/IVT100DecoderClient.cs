@@ -55,7 +55,7 @@ namespace libVT100
         /// Set foreground color, normal intensity
         ForegroundNormalBlack = 30,
         ForegroundNormalRed = 31,
-        ForegroundNormalGree = 32,
+        ForegroundNormalGreen = 32,
         ForegroundNormalYellow = 33,
         ForegroundNormalBlue = 34,
         ForegroundNormalMagenta = 35,
@@ -65,7 +65,7 @@ namespace libVT100
         /// Set background color, normal intensity
         BackgroundNormalBlack = 40,
         BackgroundNormalRed = 41,
-        BackgroundNormalGree = 42,
+        BackgroundNormalGreen = 42,
         BackgroundNormalYellow = 43,
         BackgroundNormalBlue = 44,
         BackgroundNormalMagenta = 45,
@@ -75,7 +75,7 @@ namespace libVT100
         /// Set foreground color, high intensity (aixtem)
         ForegroundBrightBlack = 90,
         ForegroundBrightRed = 91,
-        ForegroundBrightGree = 92,
+        ForegroundBrightGreen = 92,
         ForegroundBrightYellow = 93,
         ForegroundBrightBlue = 94,
         ForegroundBrightMagenta = 95,
@@ -85,7 +85,7 @@ namespace libVT100
         /// Set background color, high intensity (aixterm)
         BackgroundBrightBlack = 100,
         BackgroundBrightRed = 101,
-        BackgroundBrightGree = 102,
+        BackgroundBrightGreen = 102,
         BackgroundBrightYellow = 103,
         BackgroundBrightBlue = 104,
         BackgroundBrightMagenta = 105,
