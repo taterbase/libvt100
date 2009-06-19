@@ -218,7 +218,7 @@ namespace libVT100
                      break;
 
                   case "?25":
-                     OnModeChanged( AnsiMode.ShowCursor );
+                     OnModeChanged( AnsiMode.HideCursor );
                      break;
 
                   default:
