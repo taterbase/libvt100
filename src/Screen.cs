@@ -202,7 +202,8 @@ namespace libVT100
                 case TextColor.BrightWhite:
                     return Color.Gray;
                 }
-                return Color.Transparent;
+                throw new Exception( "Unknown color value." );
+                //return Color.Transparent;
             }
             
             public void Reset ()
@@ -315,7 +316,7 @@ namespace libVT100
             {
                 if ( m_cursorPosition != value )
                 {
-                    CheckColumnRow ( m_cursorPosition.X, m_cursorPosition.Y );
+                    CheckColumnRow ( value.X, value.Y );
                     
                     m_cursorPosition = value;
                 }
@@ -542,8 +543,8 @@ namespace libVT100
             case Direction.Forward:
                 while ( _amount > 0 )
                 {
-                    CursorForward();
-                    _amount--;
+                   CursorForward();
+                   _amount--;
                 }
                 break;
                 
@@ -670,6 +671,7 @@ namespace libVT100
                 case GraphicRendition.BlinkRapid:
                     m_currentAttributes.Blink = Blink.Rapid;
                     break;
+                case GraphicRendition.Positive:
                 case GraphicRendition.Inverse:
                     {
                         TextColor tmp = m_currentAttributes.Foreground;
@@ -692,8 +694,6 @@ namespace libVT100
                     break;
                 case GraphicRendition.NoBlink:
                     m_currentAttributes.Blink = Blink.None;
-                    break;
-                case GraphicRendition.Positive:
                     break;
                 case GraphicRendition.Reveal:
                     m_currentAttributes.Conceal = false;
@@ -755,60 +755,67 @@ namespace libVT100
                     break;
                     
                 case GraphicRendition.ForegroundBrightBlack:
-                    m_currentAttributes.Foreground = TextColor.Black;
+                    m_currentAttributes.Foreground = TextColor.BrightBlack;
                     break;
                 case GraphicRendition.ForegroundBrightRed:
-                    m_currentAttributes.Foreground = TextColor.Red;
+                    m_currentAttributes.Foreground = TextColor.BrightRed;
                     break;
                 case GraphicRendition.ForegroundBrightGreen:
-                    m_currentAttributes.Foreground = TextColor.Green;
+                    m_currentAttributes.Foreground = TextColor.BrightGreen;
                     break;
                 case GraphicRendition.ForegroundBrightYellow:
-                    m_currentAttributes.Foreground = TextColor.Yellow;
+                    m_currentAttributes.Foreground = TextColor.BrightYellow;
                     break;
                 case GraphicRendition.ForegroundBrightBlue:
-                    m_currentAttributes.Foreground = TextColor.Blue;
+                    m_currentAttributes.Foreground = TextColor.BrightBlue;
                     break;
                 case GraphicRendition.ForegroundBrightMagenta:
-                    m_currentAttributes.Foreground = TextColor.Magenta;
+                    m_currentAttributes.Foreground = TextColor.BrightMagenta;
                     break;
                 case GraphicRendition.ForegroundBrightCyan:
-                    m_currentAttributes.Foreground = TextColor.Cyan;
+                    m_currentAttributes.Foreground = TextColor.BrightCyan;
                     break;
                 case GraphicRendition.ForegroundBrightWhite:
-                    m_currentAttributes.Foreground = TextColor.White;
+                    m_currentAttributes.Foreground = TextColor.BrightWhite;
                     break;
                 case GraphicRendition.ForegroundBrightReset:
                     m_currentAttributes.Foreground = TextColor.White;
                     break;
 
                 case GraphicRendition.BackgroundBrightBlack:
-                    m_currentAttributes.Background = TextColor.Black;
+                    m_currentAttributes.Background = TextColor.BrightBlack;
                     break;
                 case GraphicRendition.BackgroundBrightRed:
-                    m_currentAttributes.Background = TextColor.Red;
+                    m_currentAttributes.Background = TextColor.BrightRed;
                     break;
                 case GraphicRendition.BackgroundBrightGreen:
-                    m_currentAttributes.Background = TextColor.Green;
+                    m_currentAttributes.Background = TextColor.BrightGreen;
                     break;
                 case GraphicRendition.BackgroundBrightYellow:
-                    m_currentAttributes.Background = TextColor.Yellow;
+                    m_currentAttributes.Background = TextColor.BrightYellow;
                     break;
                 case GraphicRendition.BackgroundBrightBlue:
-                    m_currentAttributes.Background = TextColor.Blue;
+                    m_currentAttributes.Background = TextColor.BrightBlue;
                     break;
                 case GraphicRendition.BackgroundBrightMagenta:
-                    m_currentAttributes.Background = TextColor.Magenta;
+                    m_currentAttributes.Background = TextColor.BrightMagenta;
                     break;
                 case GraphicRendition.BackgroundBrightCyan:
-                    m_currentAttributes.Background = TextColor.Cyan;
+                    m_currentAttributes.Background = TextColor.BrightCyan;
                     break;
                 case GraphicRendition.BackgroundBrightWhite:
-                    m_currentAttributes.Background = TextColor.White;
+                    m_currentAttributes.Background = TextColor.BrightWhite;
                     break;
                 case GraphicRendition.BackgroundBrightReset:
                     m_currentAttributes.Background = TextColor.Black;
                     break;
+
+                 case GraphicRendition.Font1:
+                    break;
+                      
+                default:
+                      
+                   throw new Exception ( "Unknown rendition command" );
                 }
             }
         }

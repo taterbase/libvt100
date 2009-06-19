@@ -32,8 +32,8 @@
         <include name="System.Collections.dll" />
         <include name="System.Collections.Generic.dll" />
         <include name="System.Drawing.dll" />
-        <include name="nunit.framework.dll" />
-        <include name="nunit.core.dll" />
+        <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.framework.dll" />
+        <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.core.dll" />
       </references>
       <pkg-references>
         <package name="nunit-2.4" />
