@@ -192,7 +192,7 @@ namespace libVT100
                        throw new InvalidParameterException ( _command, _parameter );
                     }
                     break;
-
+                  
                 default:
                    throw new InvalidCommandException( _command, _parameter );
             }

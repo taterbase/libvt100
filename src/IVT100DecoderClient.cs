@@ -14,5 +14,9 @@ namespace libVT100
    {
       string GetDeviceCode ( IVT100Decoder _decoder );
       DeviceStatus GetDeviceStatus ( IVT100Decoder _decoder );
+      /// <summary>Resize the terminal window to _size (given in characters).</summary>
+      void ResizeWindow ( IVT100Decoder _decoder, Size _size );
+      /// <summary>Move the terminal window to _size (given in pixels).</summary>
+      void MoveWindow ( IVT100Decoder _decoder, Point _position );
    }
 }
