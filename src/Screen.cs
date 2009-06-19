@@ -202,7 +202,7 @@ namespace libVT100
                 case TextColor.BrightWhite:
                     return Color.Gray;
                 }
-                throw new Exception( "Unknown color value." );
+                   throw new ArgumentOutOfRangeException( "_textColor", "Unknown color value." );
                 //return Color.Transparent;
             }
             
