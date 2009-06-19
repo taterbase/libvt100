@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace libVT100
 {
-    public class Screen : IVT100DecoderClient, IEnumerable<Screen.Character>
+    public class Screen : IAnsiDecoderClient, IEnumerable<Screen.Character>
     {
         public enum Blink
         {
@@ -490,13 +490,13 @@ namespace libVT100
             return (this as IEnumerable<Screen.Character>).GetEnumerator();
         }
         
-        void IVT100DecoderClient.Characters ( IVT100Decoder _sender, char[] _chars )
+        void IAnsiDecoderClient.Characters ( IAnsiDecoder _sender, char[] _chars )
         {
             foreach ( char ch in _chars )
             {
                 if ( ch == '\n' )
                 {
-                    (this as IVT100DecoderClient).MoveCursorToBeginningOfLineBelow ( _sender, 1 );
+                    (this as IAnsiDecoderClient).MoveCursorToBeginningOfLineBelow ( _sender, 1 );
                 }
                 else if ( ch == '\r' )
                 {
@@ -511,22 +511,22 @@ namespace libVT100
             }
         }
         
-        void IVT100DecoderClient.SaveCursor ( IVT100Decoder _sernder )
+        void IAnsiDecoderClient.SaveCursor ( IAnsiDecoder _sernder )
         {
             m_savedCursorPosition = m_cursorPosition;
         }
         
-        void IVT100DecoderClient.RestoreCursor ( IVT100Decoder _sender )
+        void IAnsiDecoderClient.RestoreCursor ( IAnsiDecoder _sender )
         {
            CursorPosition = m_savedCursorPosition;
         }
         
-        Size IVT100DecoderClient.GetSize ( IVT100Decoder _sender )
+        Size IAnsiDecoderClient.GetSize ( IAnsiDecoder _sender )
         {
             return Size;
         }
         
-        void IVT100DecoderClient.MoveCursor ( IVT100Decoder _sender, Direction _direction, int _amount )
+        void IAnsiDecoderClient.MoveCursor ( IAnsiDecoder _sender, Direction _direction, int _amount )
         {
             switch ( _direction )
             {
@@ -564,7 +564,7 @@ namespace libVT100
             }
         }
         
-        void IVT100DecoderClient.MoveCursorToBeginningOfLineBelow ( IVT100Decoder _sender, int _lineNumberRelativeToCurrentLine )
+        void IAnsiDecoderClient.MoveCursorToBeginningOfLineBelow ( IAnsiDecoder _sender, int _lineNumberRelativeToCurrentLine )
         {
             m_cursorPosition.X = 0;
             while ( _lineNumberRelativeToCurrentLine > 0 )
@@ -574,7 +574,7 @@ namespace libVT100
             }
         }
         
-        void IVT100DecoderClient.MoveCursorToBeginningOfLineAbove ( IVT100Decoder _sender, int _lineNumberRelativeToCurrentLine )
+        void IAnsiDecoderClient.MoveCursorToBeginningOfLineAbove ( IAnsiDecoder _sender, int _lineNumberRelativeToCurrentLine )
         {
             m_cursorPosition.X = 0;
             while ( _lineNumberRelativeToCurrentLine > 0 )
@@ -584,25 +584,25 @@ namespace libVT100
             }
         }
         
-        void IVT100DecoderClient.MoveCursorToColumn ( IVT100Decoder _sender, int _columnNumber )
+        void IAnsiDecoderClient.MoveCursorToColumn ( IAnsiDecoder _sender, int _columnNumber )
         {
            CheckColumnRow( _columnNumber, m_cursorPosition.Y );
            
            CursorPosition = new Point( _columnNumber, m_cursorPosition.Y );
         }
         
-        void IVT100DecoderClient.MoveCursorTo ( IVT100Decoder _sender, Point _position )
+        void IAnsiDecoderClient.MoveCursorTo ( IAnsiDecoder _sender, Point _position )
         {
            CheckColumnRow( _position.X, _position.Y );
            
            CursorPosition = _position;
         }
         
-        void IVT100DecoderClient.ClearScreen ( IVT100Decoder _sender, ClearDirection _direction )
+        void IAnsiDecoderClient.ClearScreen ( IAnsiDecoder _sender, ClearDirection _direction )
         {
         }
         
-        void IVT100DecoderClient.ClearLine ( IVT100Decoder _sender, ClearDirection _direction )
+        void IAnsiDecoderClient.ClearLine ( IAnsiDecoder _sender, ClearDirection _direction )
         {
             switch ( _direction )
             {
@@ -629,30 +629,30 @@ namespace libVT100
             }
         }
         
-        void IVT100DecoderClient.ScrollPageUpwards ( IVT100Decoder _sender, int _linesToScroll )
+        void IAnsiDecoderClient.ScrollPageUpwards ( IAnsiDecoder _sender, int _linesToScroll )
         {
         }
         
-        void IVT100DecoderClient.ScrollPageDownwards ( IVT100Decoder _sender, int _linesToScroll )
+        void IAnsiDecoderClient.ScrollPageDownwards ( IAnsiDecoder _sender, int _linesToScroll )
         {
         }
         
-        void IVT100DecoderClient.HideCursor ( IVT100Decoder _sender )
+        void IAnsiDecoderClient.HideCursor ( IAnsiDecoder _sender )
         {
             m_showCursor = false;
         }
         
-        void IVT100DecoderClient.ShowCursor ( IVT100Decoder _sender )
+        void IAnsiDecoderClient.ShowCursor ( IAnsiDecoder _sender )
         {
             m_showCursor = true;
         }
         
-        Point IVT100DecoderClient.GetCursorPosition ( IVT100Decoder _sender )
+        Point IAnsiDecoderClient.GetCursorPosition ( IAnsiDecoder _sender )
         {
             return new Point(m_cursorPosition.X + 1, m_cursorPosition.Y + 1);
         }
 
-        void IVT100DecoderClient.SetGraphicRendition ( IVT100Decoder _sender, GraphicRendition[] _commands )
+        void IAnsiDecoderClient.SetGraphicRendition ( IAnsiDecoder _sender, GraphicRendition[] _commands )
         {
             foreach ( GraphicRendition command in _commands )
             {
