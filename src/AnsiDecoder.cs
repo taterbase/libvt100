@@ -95,7 +95,7 @@ namespace libVT100
                         {
                             String row = _parameter.Substring( 0, separator );
                             String column = _parameter.Substring( separator + 1, _parameter.Length - separator - 1 );
-                            OnMoveCursorTo( new Point( DecodeInt( row, 1 ) - 1, DecodeInt( column, 1 ) - 1 ) );
+                            OnMoveCursorTo( new Point( DecodeInt( column, 1 ) - 1, DecodeInt( row, 1 ) - 1 ) );
                         }
                     }
                     break;
