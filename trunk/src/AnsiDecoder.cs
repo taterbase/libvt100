@@ -332,14 +332,6 @@ namespace libVT100
             }
         }
 
-        protected override void OnOutput( byte[] _output )
-        {
-            if ( Output != null )
-            {
-                Output( this, _output );
-            }
-        }
-
         private static string[] FUNCTIONKEY_MAP = { 
         //      F1     F2     F3     F4     F5     F6     F7     F8     F9     F10    F11  F12
             "11", "12", "13", "14", "15", "17", "18", "19", "20", "21", "23", "24",
@@ -444,8 +436,6 @@ namespace libVT100
                 OnOutput( r );
             }
         }
-
-        public override event DecoderOutputDelegate Output;
 
         void IAnsiDecoder.Subscribe( IAnsiDecoderClient _client )
         {
