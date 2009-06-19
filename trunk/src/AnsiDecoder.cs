@@ -429,11 +429,15 @@ namespace libVT100
                 }
                 else if ( _key == Keys.Escape )
                 {
-                    r = new byte[] { (byte) 0x1B };
+                    r = new byte[] { 0x1B };
+                }
+                else if ( _key == Keys.Tab )
+                {
+                   r = new byte[] { (byte) '\t' };
                 }
                 else
                 {
-                    return false;
+                   return false;
                 }
                 OnOutput( r );
                 return true;
