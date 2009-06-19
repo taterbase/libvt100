@@ -96,24 +96,24 @@ namespace libVT100
         BackgroundBrightReset = 109,
     }
     
-    public interface IVT100DecoderClient : IDisposable
+    public interface IAnsiDecoderClient : IDisposable
     {
-        void Characters ( IVT100Decoder _sender, char[] _chars );
-        void SaveCursor ( IVT100Decoder _sernder );
-        void RestoreCursor ( IVT100Decoder _sender );
-        Size GetSize ( IVT100Decoder _sender );
-        void MoveCursor ( IVT100Decoder _sender, Direction _direction, int _amount );
-        void MoveCursorToBeginningOfLineBelow ( IVT100Decoder _sender, int _lineNumberRelativeToCurrentLine );
-        void MoveCursorToBeginningOfLineAbove ( IVT100Decoder _sender, int _lineNumberRelativeToCurrentLine );
-        void MoveCursorToColumn ( IVT100Decoder _sender, int _columnNumber );
-        void MoveCursorTo ( IVT100Decoder _sender, Point _position );
-        void ClearScreen ( IVT100Decoder _sender, ClearDirection _direction );
-        void ClearLine ( IVT100Decoder _sender, ClearDirection _direction );
-        void ScrollPageUpwards ( IVT100Decoder _sender, int _linesToScroll );
-        void ScrollPageDownwards ( IVT100Decoder _sender, int _linesToScroll );
-        void HideCursor ( IVT100Decoder _sender );
-        void ShowCursor ( IVT100Decoder _sender );
-        Point GetCursorPosition ( IVT100Decoder _sender );
-        void SetGraphicRendition ( IVT100Decoder _sender, GraphicRendition[] _commands );
+        void Characters ( IAnsiDecoder _sender, char[] _chars );
+        void SaveCursor ( IAnsiDecoder _sernder );
+        void RestoreCursor ( IAnsiDecoder _sender );
+        Size GetSize ( IAnsiDecoder _sender );
+        void MoveCursor ( IAnsiDecoder _sender, Direction _direction, int _amount );
+        void MoveCursorToBeginningOfLineBelow ( IAnsiDecoder _sender, int _lineNumberRelativeToCurrentLine );
+        void MoveCursorToBeginningOfLineAbove ( IAnsiDecoder _sender, int _lineNumberRelativeToCurrentLine );
+        void MoveCursorToColumn ( IAnsiDecoder _sender, int _columnNumber );
+        void MoveCursorTo ( IAnsiDecoder _sender, Point _position );
+        void ClearScreen ( IAnsiDecoder _sender, ClearDirection _direction );
+        void ClearLine ( IAnsiDecoder _sender, ClearDirection _direction );
+        void ScrollPageUpwards ( IAnsiDecoder _sender, int _linesToScroll );
+        void ScrollPageDownwards ( IAnsiDecoder _sender, int _linesToScroll );
+        void HideCursor ( IAnsiDecoder _sender );
+        void ShowCursor ( IAnsiDecoder _sender );
+        Point GetCursorPosition ( IAnsiDecoder _sender );
+        void SetGraphicRendition ( IAnsiDecoder _sender, GraphicRendition[] _commands );
     }
 }

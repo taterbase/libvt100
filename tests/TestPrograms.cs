@@ -19,7 +19,7 @@ namespace libVT100.Tests
         
         public void ReadAndRenderFile ( string _filename )
         {
-            IVT100Decoder vt100 = new VT100Decoder();
+            IAnsiDecoder vt100 = new AnsiDecoder();
             //vt100.Encoding = encodingInfo.GetEncoding (); // encodingInfo.Name, new EncoderExceptionFallback(), new DecoderReplacementFallback ("U") );
             Screen screen = new Screen ( 80, 160 );
             vt100.Subscribe ( screen );

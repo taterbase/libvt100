@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace libVT100
 {
-    public class VT100Decoder : EscapeCharacterDecoder, IVT100Decoder
+    public class AnsiDecoder : EscapeCharacterDecoder, IAnsiDecoder
     {
-        protected List<IVT100DecoderClient> m_listeners;
+        protected List<IAnsiDecoderClient> m_listeners;
 
         Encoding IDecoder.Encoding
         {
@@ -27,10 +27,10 @@ namespace libVT100
             }
         }
 
-        public VT100Decoder()
+        public AnsiDecoder()
             : base()
         {
-            m_listeners = new List<IVT100DecoderClient>();
+            m_listeners = new List<IAnsiDecoderClient>();
         }
 
         private int DecodeInt( String _value, int _default )
@@ -192,7 +192,7 @@ namespace libVT100
 
         protected virtual void OnSetGraphicRendition( GraphicRendition[] _commands )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.SetGraphicRendition( this, _commands );
             }
@@ -200,7 +200,7 @@ namespace libVT100
 
         protected virtual void OnScrollPageUpwards( int _linesToScroll )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.ScrollPageUpwards( this, _linesToScroll );
             }
@@ -208,7 +208,7 @@ namespace libVT100
 
         protected virtual void OnScrollPageDownwards( int _linesToScroll )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.ScrollPageDownwards( this, _linesToScroll );
             }
@@ -216,7 +216,7 @@ namespace libVT100
 
         protected virtual void OnHideCursor()
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.HideCursor( this );
             }
@@ -224,7 +224,7 @@ namespace libVT100
 
         protected virtual void OnShowCursor()
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.ShowCursor( this );
             }
@@ -232,7 +232,7 @@ namespace libVT100
 
         protected virtual void OnSaveCursor()
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.SaveCursor( this );
             }
@@ -240,7 +240,7 @@ namespace libVT100
 
         protected virtual void OnRestoreCursor()
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.RestoreCursor( this );
             }
@@ -249,7 +249,7 @@ namespace libVT100
         protected virtual Point OnGetCursorPosition()
         {
             Point ret;
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 ret = client.GetCursorPosition( this );
                 if ( !ret.IsEmpty )
@@ -262,7 +262,7 @@ namespace libVT100
 
         protected virtual void OnClearScreen( ClearDirection _direction )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.ClearScreen( this, _direction );
             }
@@ -270,7 +270,7 @@ namespace libVT100
 
         protected virtual void OnClearLine( ClearDirection _direction )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.ClearLine( this, _direction );
             }
@@ -278,7 +278,7 @@ namespace libVT100
 
         protected virtual void OnMoveCursorTo( Point _position )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.MoveCursorTo( this, _position );
             }
@@ -286,7 +286,7 @@ namespace libVT100
 
         protected virtual void OnMoveCursorToColumn( int _columnNumber )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.MoveCursorToColumn( this, _columnNumber );
             }
@@ -294,7 +294,7 @@ namespace libVT100
 
         protected virtual void OnMoveCursor( Direction _direction, int _amount )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.MoveCursor( this, _direction, _amount );
             }
@@ -302,7 +302,7 @@ namespace libVT100
 
         protected virtual void OnMoveCursorToBeginningOfLineBelow( int _lineNumberRelativeToCurrentLine )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.MoveCursorToBeginningOfLineBelow( this, _lineNumberRelativeToCurrentLine );
             }
@@ -310,7 +310,7 @@ namespace libVT100
 
         protected virtual void OnMoveCursorToBeginningOfLineAbove( int _lineNumberRelativeToCurrentLine )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.MoveCursorToBeginningOfLineAbove( this, _lineNumberRelativeToCurrentLine );
             }
@@ -318,7 +318,7 @@ namespace libVT100
 
         protected override void OnCharacters( char[] _characters )
         {
-            foreach ( IVT100DecoderClient client in m_listeners )
+            foreach ( IAnsiDecoderClient client in m_listeners )
             {
                 client.Characters( this, _characters );
             }
@@ -439,12 +439,12 @@ namespace libVT100
 
         public override event DecoderOutputDelegate Output;
 
-        void IVT100Decoder.Subscribe( IVT100DecoderClient _client )
+        void IAnsiDecoder.Subscribe( IAnsiDecoderClient _client )
         {
             m_listeners.Add( _client );
         }
 
-        void IVT100Decoder.UnSubscribe( IVT100DecoderClient _client )
+        void IAnsiDecoder.UnSubscribe( IAnsiDecoderClient _client )
         {
             m_listeners.Remove( _client );
         }

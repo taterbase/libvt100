@@ -42,7 +42,7 @@ namespace libVT100.Tests
         
         public Screen ReadAndRenderFile ( string _filename, Encoding _encoding, Size _size )
         {
-            IVT100Decoder vt100 = new VT100Decoder();
+            IAnsiDecoder vt100 = new AnsiDecoder();
             //vt100.Encoding = Encoding.GetEncoding ( encodingInfo.Name, new EncoderExceptionFallback(), new DecoderReplacementFallback ("U") );
             vt100.Encoding = _encoding;
             Screen screen = new Screen ( _size.Width, _size.Height );
