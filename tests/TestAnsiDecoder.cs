@@ -65,25 +65,25 @@ namespace libVT100.Tests
         {
             Input ( "AB\x001B[2;5fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(1,4), m_moveCursorTo );
+            Assert.AreEqual ( new Point(4,1), m_moveCursorTo );
 
             Reset();
             
             Input ( "AB\x001B2;5fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(1,4), m_moveCursorTo );
+            Assert.AreEqual ( new Point(4,1), m_moveCursorTo );
             
             Reset();
             
             Input ( "AB\x001B[;4fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(0,3), m_moveCursorTo );
+            Assert.AreEqual ( new Point(3,0), m_moveCursorTo );
             
             Reset();
             
             Input ( "AB\x001B[3;fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(2,0), m_moveCursorTo );
+            Assert.AreEqual ( new Point(0,2), m_moveCursorTo );
             
             Reset();
             

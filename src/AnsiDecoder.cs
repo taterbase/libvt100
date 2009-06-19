@@ -174,7 +174,7 @@ namespace libVT100
                     }
                     else
                     {
-                        //throw new Exception( String.Format( "Unknown parameter for l command: {0}", _parameter ) );
+                       throw new InvalidParameterException ( _command, _parameter );
                     }
                     break;
 
@@ -189,15 +189,15 @@ namespace libVT100
                     }
                     else
                     {
-                        //throw new Exception( String.Format( "Unknown parameter for l command: {0}", _parameter ) );
+                       throw new InvalidParameterException ( _command, _parameter );
                     }
                     break;
 
                 default:
-                    throw new Exception( String.Format( "Unknown command: {0} ({1:X2}), {2}", (char) _command, _command, _parameter ) );
+                   throw new InvalidCommandException( _command, _parameter );
             }
         }
-
+        
         protected virtual void OnSetGraphicRendition( GraphicRendition[] _commands )
         {
             foreach ( IAnsiDecoderClient client in m_listeners )
@@ -338,7 +338,7 @@ namespace libVT100
         //      F13    F14    F15    F16    F17  F18    F19    F20    F21    F22
             "25", "26", "28", "29", "31", "32", "33", "34", "23", "24" };
         
-        void IDecoder.KeyPressed( Keys _modifiers, Keys _key )
+        bool IDecoder.KeyPressed( Keys _modifiers, Keys _key )
         {
             if ( (int) Keys.F1 <= (int) _key && (int) _key <= (int) Keys.F12 )
             {
@@ -358,6 +358,7 @@ namespace libVT100
                 r[3] = (byte) f[1];
                 r[4] = (byte) tail;
                 OnOutput( r );
+                return true;
             }
             else if ( _key == Keys.Left || _key == Keys.Right || _key == Keys.Up || _key == Keys.Down )
             {
@@ -386,6 +387,7 @@ namespace libVT100
                         throw new ArgumentException( "unknown cursor key code", "key" );
                 }
                 OnOutput( r );
+                return true;
             }
             else
             {
@@ -431,9 +433,10 @@ namespace libVT100
                 }
                 else
                 {
-                    return;
+                    return false;
                 }
                 OnOutput( r );
+                return true;
             }
         }
 
