@@ -637,14 +637,18 @@ namespace libVT100
         {
         }
         
-        void IAnsiDecoderClient.HideCursor ( IAnsiDecoder _sender )
+        void IAnsiDecoderClient.ModeChanged ( IAnsiDecoder _sender, AnsiMode _mode )
         {
-            m_showCursor = false;
-        }
-        
-        void IAnsiDecoderClient.ShowCursor ( IAnsiDecoder _sender )
-        {
-            m_showCursor = true;
+           switch ( _mode )
+           {
+              case AnsiMode.HideCursor:
+                 m_showCursor = false;
+                 break;
+
+              case AnsiMode.ShowCursor:
+                 m_showCursor = true;
+                 break;
+           }
         }
         
         Point IAnsiDecoderClient.GetCursorPosition ( IAnsiDecoder _sender )

@@ -458,15 +458,19 @@ namespace libVT100.Tests
         {
             m_scrollPageDownwards = _linesToScroll;
         }
-        
-        void IAnsiDecoderClient.HideCursor ( IAnsiDecoder _sender )
+
+       void IAnsiDecoderClient.ModeChanged( IAnsiDecoder _sender, AnsiMode _mode )
         {
-            m_hideCursor = true;
-        }
-        
-        void IAnsiDecoderClient.ShowCursor ( IAnsiDecoder _sender )
-        {
-            m_showCursor = true;
+           switch ( _mode )
+           {
+              case AnsiMode.HideCursor:
+                 m_hideCursor = true;
+                 break;
+
+              case AnsiMode.ShowCursor:
+                 m_showCursor = true;
+                 break;
+           }
         }
         
         Point IAnsiDecoderClient.GetCursorPosition ( IAnsiDecoder _sender )

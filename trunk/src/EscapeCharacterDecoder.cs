@@ -90,6 +90,11 @@ namespace libVT100
           }
        }
 
+       protected virtual bool IsValidOneCharacterCommand( char _command )
+       {
+          return false;
+       }
+       
         protected void ProcessCommandBuffer ()
         {
             /*
@@ -122,7 +127,7 @@ namespace libVT100
                         return;
                     }
                 }
-                
+
                 bool insideQuotes = false;
                 int end = start;
                 while ( end < m_commandBuffer.Count && (IsValidParameterCharacter((char) m_commandBuffer[end]) || insideQuotes) )
@@ -133,7 +138,11 @@ namespace libVT100
                     }
                     end++;
                 }
-                
+
+                if ( m_commandBuffer.Count == 2 && IsValidOneCharacterCommand( (char) m_commandBuffer[start] ) )
+                {
+                   end = m_commandBuffer.Count - 1;
+                }
                 if ( end == m_commandBuffer.Count )
                 {
                     // More data needed
