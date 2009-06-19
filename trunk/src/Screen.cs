@@ -285,7 +285,7 @@ namespace libVT100
                             this[x,y] = new Character ();
                         }
                     }
-                    m_cursorPosition = new Point(0, 0);
+                    CursorPosition = new Point(0, 0);
                 }
             }
         }
@@ -373,20 +373,26 @@ namespace libVT100
         
         public void CursorForward ()
         {
-            m_cursorPosition.X ++;
-            if ( m_cursorPosition.X >= Width )
-            {
-                CursorPosition = new Point ( 0, m_cursorPosition.Y + 1 );
-            }
+           if ( m_cursorPosition.X + 1 >= Width )
+           {
+              CursorPosition = new Point( 0, m_cursorPosition.Y + 1 );
+           }
+           else
+           {
+              CursorPosition = new Point( m_cursorPosition.X + 1, m_cursorPosition.Y );
+           }
         }
 
         public void CursorBackward ()
         {
-            m_cursorPosition.X --;
-            if ( m_cursorPosition.X < 0 )
-            {
-                CursorPosition = new Point ( Width - 1, m_cursorPosition.Y - 1 );
-            }
+           if ( m_cursorPosition.X - 1 < 0 )
+           {
+              CursorPosition = new Point( Width - 1, m_cursorPosition.Y - 1 );
+           }
+           else
+           {
+              CursorPosition = new Point( m_cursorPosition.X - 1, m_cursorPosition.Y );
+           }
         }
         
         public void CursorDown ()
@@ -395,16 +401,16 @@ namespace libVT100
             {
                 throw new Exception ( "Can not move further down!" );
             }
-            m_cursorPosition.Y ++;
+            CursorPosition = new Point( m_cursorPosition.X, m_cursorPosition.Y + 1 );
         }
 
         public void CursorUp ()
         {
-            if ( m_cursorPosition.Y - 1 < 0 )
-            {
-                throw new Exception ( "Can not move further up!" );
-            }
-            m_cursorPosition.Y --;
+           if ( m_cursorPosition.Y - 1 < 0 )
+           {
+              throw new Exception( "Can not move further up!" );
+           }
+           CursorPosition = new Point( m_cursorPosition.X, m_cursorPosition.Y - 1 );
         }
         
         public override String ToString ()
@@ -512,7 +518,7 @@ namespace libVT100
         
         void IVT100DecoderClient.RestoreCursor ( IVT100Decoder _sender )
         {
-            m_cursorPosition = m_savedCursorPosition;
+           CursorPosition = m_savedCursorPosition;
         }
         
         Size IVT100DecoderClient.GetSize ( IVT100Decoder _sender )
@@ -580,14 +586,16 @@ namespace libVT100
         
         void IVT100DecoderClient.MoveCursorToColumn ( IVT100Decoder _sender, int _columnNumber )
         {
-            CheckColumnRow ( _columnNumber, m_cursorPosition.Y );
+           CheckColumnRow( _columnNumber, m_cursorPosition.Y );
+           
+           CursorPosition = new Point( _columnNumber, m_cursorPosition.Y );
         }
         
         void IVT100DecoderClient.MoveCursorTo ( IVT100Decoder _sender, Point _position )
         {
-            CheckColumnRow ( _position.X, _position.Y );
-            
-            m_cursorPosition = _position;
+           CheckColumnRow( _position.X, _position.Y );
+           
+           CursorPosition = _position;
         }
         
         void IVT100DecoderClient.ClearScreen ( IVT100Decoder _sender, ClearDirection _direction )

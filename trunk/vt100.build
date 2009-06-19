@@ -54,6 +54,10 @@
     <exec workingdir="${builddir}" program="mono" commandline="--debug /usr/lib/nunit/nunit-console.exe -labels ${testname}" />
   </target>
 
+  <target name="check-win32" description="Run the nunit test suite on mono with --debug" depends="build-test">
+    <exec workingdir="${builddir}" program="C:\Programmer\NUnit 2.4.8\bin\nunit-console.exe" commandline="-labels ${testname}" />
+  </target>
+
   <target name="tags" description="Create emacs TAGS">
     <exec program="./create_tags.sh" />
   </target>
