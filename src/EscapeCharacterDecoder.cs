@@ -9,6 +9,8 @@ namespace libVT100
     {
         public const byte EscapeCharacter = 0x1B;
         public const byte LeftBracketCharacter = 0x5B;
+        public const byte XonCharacter = 17;
+        public const byte XoffCharacter = 19;
         
         protected enum State
         {
@@ -20,7 +22,10 @@ namespace libVT100
         protected Decoder m_decoder;
         protected Encoder m_encoder;
         protected List<byte> m_commandBuffer;
-        
+        protected bool m_supportXonXoff;
+        protected bool m_xOffReceived;
+        protected List<byte[]> m_outBuffer;
+
         Encoding IDecoder.Encoding
         {
             get
@@ -43,6 +48,9 @@ namespace libVT100
             m_state = State.Normal;
             (this as IDecoder).Encoding = Encoding.ASCII;
             m_commandBuffer = new List<byte>();
+            m_supportXonXoff = true;
+            m_xOffReceived = false;
+            m_outBuffer = new List<byte[]>();
         }
         
         virtual protected bool IsValidParameterCharacter ( char _c )
@@ -154,7 +162,14 @@ namespace libVT100
             {
                 throw new Exception ( "Internal error, ProcessNormalInput was passed an escape character, please report this bug to the author." );
             }
-                            
+            if ( m_supportXonXoff )
+            {
+               if ( _data == XonCharacter || _data == XoffCharacter )
+               {
+                  return;
+               }
+            }
+           
             byte[] data = new byte[] { _data };
             int charCount = m_decoder.GetCharCount ( data, 0, 1);
             char[] characters = new char[charCount];
@@ -185,6 +200,28 @@ namespace libVT100
             if ( _data.Length == 0 )
             {
                 throw new ArgumentException ( "Input can not process an empty array." );
+            }
+
+            if ( m_supportXonXoff )
+            {
+               foreach ( byte b in _data )
+               {
+                  if ( b == XoffCharacter )
+                  {
+                     m_xOffReceived = true;
+                  }
+                  else if ( b == XonCharacter )
+                  {
+                     m_xOffReceived = false;
+                     if ( m_outBuffer.Count > 0 )
+                     {
+                        foreach ( byte[] output in m_outBuffer )
+                        {
+                           OnOutput( output );
+                        }
+                     }
+                  }
+               }
             }
             
             switch ( m_state )
@@ -242,7 +279,21 @@ namespace libVT100
         
         abstract protected void OnCharacters ( char[] _characters );
         abstract protected void ProcessCommand ( byte _command, String _parameter );
-        abstract public event DecoderOutputDelegate Output;
-       abstract protected void OnOutput( byte[] _data );
+
+        virtual public event DecoderOutputDelegate Output;
+        virtual protected void OnOutput( byte[] _output )
+        {
+            if ( Output != null )
+            {
+               if ( m_supportXonXoff && m_xOffReceived )
+               {
+                  m_outBuffer.Add( _output );
+               }
+               else
+               {
+                  Output( this, _output );
+               }
+            }
+        }
     }
 }
