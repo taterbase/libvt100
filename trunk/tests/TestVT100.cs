@@ -36,7 +36,7 @@ namespace libVT100.Tests
         {
             Reset ();
             
-            m_cursorPosition = new Point(1,1);
+            m_cursorPosition = new Point(0,0);
             m_size = new Size(10,10);
               
             m_vt100 = new VT100Decoder ();
@@ -65,37 +65,37 @@ namespace libVT100.Tests
         {
             Input ( "AB\x001B[2;5fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(2,5), m_moveCursorTo );
+            Assert.AreEqual ( new Point(1,4), m_moveCursorTo );
 
             Reset();
             
             Input ( "AB\x001B2;5fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(2,5), m_moveCursorTo );
+            Assert.AreEqual ( new Point(1,4), m_moveCursorTo );
             
             Reset();
             
             Input ( "AB\x001B[;4fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(1,4), m_moveCursorTo );
+            Assert.AreEqual ( new Point(0,3), m_moveCursorTo );
             
             Reset();
             
             Input ( "AB\x001B[3;fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(3,1), m_moveCursorTo );
+            Assert.AreEqual ( new Point(2,0), m_moveCursorTo );
             
             Reset();
             
             Input ( "AB\x001B[;fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(1,1), m_moveCursorTo );
+            Assert.AreEqual ( new Point(0,0), m_moveCursorTo );
 
             Reset();
             
             Input ( "AB\x001B[fCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( new Point(1,1), m_moveCursorTo );
+            Assert.AreEqual ( new Point(0,0), m_moveCursorTo );
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace libVT100.Tests
             m_cursorPosition = new Point(7,2);
             Input ( "AB\x001B[6nCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( "\x001B[2;7R", Output );
+            Assert.AreEqual ( "\x001B[3;8R", Output );
         }
 
         [Test]
@@ -318,13 +318,13 @@ namespace libVT100.Tests
         {
             Input ( "AB\x001B[1GCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( 1, m_moveCursorToColumn );
+            Assert.AreEqual ( 0, m_moveCursorToColumn );
             
             Reset ();
 
             Input ( "AB\x001B[7GCDE" );
             Assert.AreEqual ( "ABCDE", ReceivedCharacters );
-            Assert.AreEqual ( 7, m_moveCursorToColumn );
+            Assert.AreEqual ( 6, m_moveCursorToColumn );
         }
         
         public void Reset ()
