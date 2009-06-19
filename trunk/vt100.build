@@ -35,9 +35,11 @@
         <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.framework.dll" />
         <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.core.dll" />
       </references>
+<!--
       <pkg-references>
         <package name="nunit-2.4" />
       </pkg-references>
+-->
 <!--      <arg value="/nowarn:219"/>-->
     </csc>
   </target>
@@ -47,7 +49,7 @@
   </target>
 
   <target name="check" description="Run the nunit test suite" depends="build-test">
-    <exec workingdir="${builddir}" program="nunit-console" commandline="${testname}" />
+    <exec workingdir="${builddir}" program="c:\\programmer\\nunit 2.4.8\\bin\\nunit-console.exe" commandline="${testname}" />
   </target>
 
   <target name="check-mono" description="Run the nunit test suite on mono with --debug" depends="build-test">
