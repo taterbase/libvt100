@@ -168,9 +168,13 @@ namespace libVT100
                     {
                         OnHideCursor();
                     }
+                    else if ( _parameter == "?7" )
+                    {
+                       // Disable line wrap
+                    }
                     else
                     {
-                        throw new Exception( String.Format( "Unknown parameter for l command: {0}", _parameter ) );
+                        //throw new Exception( String.Format( "Unknown parameter for l command: {0}", _parameter ) );
                     }
                     break;
 
@@ -179,9 +183,13 @@ namespace libVT100
                     {
                         OnShowCursor();
                     }
+                    else if ( _parameter == "?7" )
+                    {
+                       // Enable line wrap
+                    }
                     else
                     {
-                        throw new Exception( String.Format( "Unknown parameter for l command: {0}", _parameter ) );
+                        //throw new Exception( String.Format( "Unknown parameter for l command: {0}", _parameter ) );
                     }
                     break;
 
