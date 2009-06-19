@@ -21,10 +21,10 @@ namespace libVT100
         protected Encoding m_encoding;
         protected Decoder m_decoder;
         protected Encoder m_encoder;
-        protected List<byte> m_commandBuffer;
+       private List<byte> m_commandBuffer;
         protected bool m_supportXonXoff;
         protected bool m_xOffReceived;
-        protected List<byte[]> m_outBuffer;
+       protected List<byte[]> m_outBuffer;
 
         Encoding IDecoder.Encoding
         {
@@ -58,7 +58,38 @@ namespace libVT100
            //return (Char.IsNumber( _c ) || _c == '(' || _c == ')' || _c == ';' || _c == '"' || _c == '?');
            return (Char.IsNumber( _c ) || _c == ';' || _c == '"' || _c == '?');
         }
-        
+
+       protected void AddToCommandBuffer( byte _byte )
+       {
+          if ( m_supportXonXoff )
+          {
+             if ( _byte == XonCharacter || _byte == XoffCharacter )
+             {
+                return;
+             }
+          }
+
+          m_commandBuffer.Add( _byte );
+       }
+       
+       protected void AddToCommandBuffer( byte[] _bytes )
+       {
+          if ( m_supportXonXoff )
+          {
+             foreach ( byte b in _bytes )
+             {
+                if ( !(b == XonCharacter || b == XoffCharacter) )
+                {
+                   m_commandBuffer.Add( b );
+                }
+             }
+          }
+          else
+          {
+             m_commandBuffer.AddRange( _bytes );
+          }
+       }
+
         protected void ProcessCommandBuffer ()
         {
             /*
@@ -229,7 +260,7 @@ namespace libVT100
             case State.Normal:
                 if ( _data[0] == EscapeCharacter )
                 {
-                    m_commandBuffer.AddRange ( _data );
+                    AddToCommandBuffer( _data );
                     ProcessCommandBuffer ();
                 }
                 else
@@ -244,7 +275,7 @@ namespace libVT100
                     {
                         while ( i < _data.Length )
                         {
-                            m_commandBuffer.Add ( _data[i] );
+                            AddToCommandBuffer ( _data[i] );
                             i++;
                         }
                         ProcessCommandBuffer ();
@@ -253,7 +284,7 @@ namespace libVT100
                 break;
                 
             case State.Command:
-                m_commandBuffer.AddRange ( _data );
+                AddToCommandBuffer ( _data );
                 ProcessCommandBuffer ();
                 break;
             }
