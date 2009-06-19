@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace libVT100
 {
     public interface IAnsiDecoder : IDecoder

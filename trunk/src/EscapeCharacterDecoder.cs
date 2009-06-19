@@ -47,7 +47,8 @@ namespace libVT100
         
         virtual protected bool IsValidParameterCharacter ( char _c )
         {
-            return (Char.IsNumber(_c) || _c == '(' || _c == ')' || _c == ';' || _c == '"' || _c == '?' );
+           //return (Char.IsNumber( _c ) || _c == '(' || _c == ')' || _c == ';' || _c == '"' || _c == '?');
+           return (Char.IsNumber( _c ) || _c == ';' || _c == '"' || _c == '?');
         }
         
         protected void ProcessCommandBuffer ()
