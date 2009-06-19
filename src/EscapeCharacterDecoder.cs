@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace libVT100
 {
@@ -164,7 +165,7 @@ namespace libVT100
             }
             else
             {
-                System.Console.WriteLine ( "char count was zero" );
+               //System.Console.WriteLine ( "char count was zero" );
             }
 
         }
@@ -219,7 +220,17 @@ namespace libVT100
                 break;
             }
         }
-        
+       
+       void IDecoder.CharacterTyped( char _character )
+       {
+          byte[] data = m_encoding.GetBytes( new char[] { _character } );
+          OnOutput( data );
+       }
+       
+       void IDecoder.KeyPressed( Keys _modifiers, Keys _key )
+       {
+       }
+
         void IDisposable.Dispose ()
         {
             m_encoding = null;
@@ -231,5 +242,6 @@ namespace libVT100
         abstract protected void OnCharacters ( char[] _characters );
         abstract protected void ProcessCommand ( byte _command, String _parameter );
         abstract public event DecoderOutputDelegate Output;
+       abstract protected void OnOutput( byte[] _data );
     }
 }

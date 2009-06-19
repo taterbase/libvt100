@@ -136,7 +136,14 @@ namespace libVT100.Tests
         {
             m_chars.Add ( _chars );
         }
-        
+
+       protected override void OnOutput( byte[] _data )
+       {
+          if ( Output != null )
+          {
+             Output( this, _data );
+          }
+       }
         override public event DecoderOutputDelegate Output;
     }
 }

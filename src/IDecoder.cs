@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Windows.Forms;
 
 namespace libVT100
 {
@@ -12,5 +13,8 @@ namespace libVT100
         void Input ( byte[] _data );
         
         event DecoderOutputDelegate Output;
+
+       void KeyPressed( Keys _modifiers, Keys _key );
+       void CharacterTyped( char _character );
     }
 }
