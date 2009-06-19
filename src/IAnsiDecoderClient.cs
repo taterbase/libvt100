@@ -95,7 +95,35 @@ namespace libVT100
         BackgroundBrightWhite = 107,
         BackgroundBrightReset = 109,
     }
-    
+   
+   public enum AnsiMode 
+   {
+      ShowCursor,
+      HideCursor,
+      LineFeed,
+      NewLine,
+      CursorKeyToCursor,
+      CursorKeyToApplication,
+      ANSI,
+      VT52,
+      Columns80,
+      Columns132,
+      JumpScrolling,
+      SmoothScrolling,
+      NormalVideo,
+      ReverseVideo,
+      OriginIsAbsolute,
+      OriginIsRelative,
+      LineWrap,
+      DisableLineWrap,
+      AutoRepeat,
+      DisableAutoRepeat,
+      Interlacing,
+      DisableInterlacing,
+      NumericKeypad,
+      AlternateKeypad,
+   }
+   
     public interface IAnsiDecoderClient : IDisposable
     {
         void Characters ( IAnsiDecoder _sender, char[] _chars );
@@ -111,9 +139,8 @@ namespace libVT100
         void ClearLine ( IAnsiDecoder _sender, ClearDirection _direction );
         void ScrollPageUpwards ( IAnsiDecoder _sender, int _linesToScroll );
         void ScrollPageDownwards ( IAnsiDecoder _sender, int _linesToScroll );
-        void HideCursor ( IAnsiDecoder _sender );
-        void ShowCursor ( IAnsiDecoder _sender );
         Point GetCursorPosition ( IAnsiDecoder _sender );
         void SetGraphicRendition ( IAnsiDecoder _sender, GraphicRendition[] _commands );
+       void ModeChanged( IAnsiDecoder _sender, AnsiMode _mode );
     }
 }

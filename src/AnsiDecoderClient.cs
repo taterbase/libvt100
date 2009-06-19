@@ -74,12 +74,8 @@ namespace libVT100
         void IAnsiDecoderClient.ScrollPageDownwards ( IAnsiDecoder _sender, int _linesToScroll )
         {
         }
-        
-        void IAnsiDecoderClient.HideCursor ( IAnsiDecoder _sender )
-        {
-        }
-        
-        void IAnsiDecoderClient.ShowCursor ( IAnsiDecoder _sender )
+
+       void IAnsiDecoderClient.ModeChanged( IAnsiDecoder _sender, AnsiMode _mode )
         {
         }
         
