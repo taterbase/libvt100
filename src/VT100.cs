@@ -48,11 +48,18 @@ namespace libVT100
         
         virtual protected bool IsValidParameterCharacter ( char _c )
         {
-            return (Char.IsNumber(_c) || _c == '(' || _c == ')' || _c == ';');
+            return (Char.IsNumber(_c) || _c == '(' || _c == ')' || _c == ';' || _c == '"');
         }
         
         protected void ProcessCommandBuffer ()
         {
+            System.Console.Write ( "ProcessCommandBuffer: " );
+            foreach ( byte b in m_commandBuffer )
+            {
+                System.Console.Write ( "{0:X2} ", b );
+            }
+            System.Console.WriteLine ( "" );
+            
             m_state = State.Command;
             
             if ( m_commandBuffer.Count > 1 )
@@ -107,6 +114,8 @@ namespace libVT100
                 
                 ProcessCommand ( command, parameter );
                 
+                System.Console.WriteLine ( "Remove the processed commands" );
+                
                 // Remove the processed commands
                 if ( m_commandBuffer.Count == end - 1 )
                 {
@@ -120,7 +129,7 @@ namespace libVT100
                     {
                         if ( m_commandBuffer[i] == EscapeCharacter )
                         {
-                            m_commandBuffer.RemoveRange ( 0, i - 1 );
+                            m_commandBuffer.RemoveRange ( 0, i );
                             ProcessCommandBuffer ();
                             return;
                         }
@@ -129,6 +138,8 @@ namespace libVT100
                             ProcessNormalInput ( m_commandBuffer[i] );
                         }
                     }
+                    m_commandBuffer.Clear ();
+                    
                     m_state = State.Normal;
                 }
             }
@@ -136,6 +147,12 @@ namespace libVT100
         
         protected void ProcessNormalInput ( byte _data )
         {
+            System.Console.WriteLine ( "ProcessNormalInput: {0:X2}", _data );
+            if ( _data == EscapeCharacter )
+            {
+                throw new Exception ( "Internal error, ProcessNormalInput was passed an escape character, please report this bug to the author." );
+            }
+                            
             byte[] data = new byte[] { _data };
             int charCount = m_decoder.GetCharCount ( data, 0, 1 );
             if ( charCount > 0 )
@@ -155,7 +172,7 @@ namespace libVT100
         
         void IVT100.Input ( byte[] _data )
         {
-            System.Console.Write ( "Input: " );
+            System.Console.Write ( "Input[{0}]: ", m_state );
             foreach ( byte b in _data )
             {
                 System.Console.Write ( "{0:X2} ", b );
@@ -220,7 +237,7 @@ namespace libVT100
         
         protected virtual void OnCharacters ( char[] _characters )
         {
-            System.Console.WriteLine ( "OnCharacters: {0} characters", _characters.Length );
+            //System.Console.WriteLine ( "OnCharacters: {0} characters", _characters.Length );
             
             foreach ( IVT100Client client in m_listeners )
             {
