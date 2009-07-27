@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libvt100", "src\libvt100.csproj", "{1207872C-AD4D-4EEE-B222-B55904B6D488}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "tests\UnitTest.csproj", "{0B7E0C27-FF5D-4FDF-9E3C-3ABC882324FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1207872C-AD4D-4EEE-B222-B55904B6D488} = {1207872C-AD4D-4EEE-B222-B55904B6D488}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vt100render", "vt100render\vt100render.csproj", "{CEE0F154-37B5-4070-B75A-6372CB29555C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1207872C-AD4D-4EEE-B222-B55904B6D488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1207872C-AD4D-4EEE-B222-B55904B6D488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1207872C-AD4D-4EEE-B222-B55904B6D488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1207872C-AD4D-4EEE-B222-B55904B6D488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B7E0C27-FF5D-4FDF-9E3C-3ABC882324FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7E0C27-FF5D-4FDF-9E3C-3ABC882324FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B7E0C27-FF5D-4FDF-9E3C-3ABC882324FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B7E0C27-FF5D-4FDF-9E3C-3ABC882324FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE0F154-37B5-4070-B75A-6372CB29555C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE0F154-37B5-4070-B75A-6372CB29555C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE0F154-37B5-4070-B75A-6372CB29555C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE0F154-37B5-4070-B75A-6372CB29555C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

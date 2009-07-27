@@ -1,0 +1,5 @@
+This is just a simple test
+--
+Æslet Åse er Ølglad.
+
+It shouldn't prove a big problem to read!

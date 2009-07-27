@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project name="libVT100" default="build" basedir=".">
+  <property name="builddir" value="build" overwrite="false" />
+  <property name="srcdir" value="src" overwrite="false" />
+  <property name="libraryname" value="libVT100.dll" overwrite="false" />
+  <property name="debug" value="true" overwrite="false" />
+  <property name="testname" value="test${libraryname}" overwrite="false" />
+
+  <target name="build" description="Build the library">
+    <mkdir dir="${builddir}" />
+    <csc target="library" output="${builddir}/${libraryname}" debug="${debug}">
+      <sources>
+        <include name="${srcdir}/*.cs" />
+      </sources>
+      <references>
+        <include name="System.dll" />
+        <include name="System.Collections.dll" />
+        <include name="System.Collections.Generic.dll" />
+        <include name="System.Drawing.dll" />
+      </references>
+    </csc>
+  </target>
+
+  <target name="build-test" description="Build the unit test" depends="build">
+    <csc target="library" output="${builddir}/${testname}" debug="${debug}">
+      <sources>
+        <include name="tests/*.cs" />
+      </sources>
+      <references>
+        <include name="${builddir}/${libraryname}" />
+        <include name="System.dll" />
+        <include name="System.Collections.dll" />
+        <include name="System.Collections.Generic.dll" />
+        <include name="System.Drawing.dll" />
+        <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.framework.dll" />
+        <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.core.dll" />
+      </references>
+<!--
+      <pkg-references>
+        <package name="nunit-2.4" />
+      </pkg-references>
+-->
+<!--      <arg value="/nowarn:219"/>-->
+    </csc>
+  </target>
+
+  <target name="clean" description="Delete generated files">
+    <delete dir="${builddir}" failonerror="false" />
+  </target>
+
+  <target name="check" description="Run the nunit test suite" depends="build-test">
+    <exec workingdir="${builddir}" program="c:\\programmer\\nunit 2.4.8\\bin\\nunit-console.exe" commandline="${testname}" />
+  </target>
+
+  <target name="check-mono" description="Run the nunit test suite on mono with --debug" depends="build-test">
+    <exec workingdir="${builddir}" program="mono" commandline="--debug /usr/lib/nunit/nunit-console.exe -labels ${testname}" />
+  </target>
+
+  <target name="check-win32" description="Run the nunit test suite on mono with --debug" depends="build-test">
+    <exec workingdir="${builddir}" program="C:\Programmer\NUnit 2.4.8\bin\nunit-console.exe" commandline="-labels ${testname}" />
+  </target>
+
+  <target name="tags" description="Create emacs TAGS">
+    <exec program="./create_tags.sh" />
+  </target>
+</project>
