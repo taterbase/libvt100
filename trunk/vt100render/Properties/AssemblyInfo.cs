@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "UnitTest" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyTitle( "vt100render" )]
+[assembly: AssemblyDescription( "Command line utility to render a file with VT100/ANSI commands to a PNG file." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Sequanto A/S" )]
-[assembly: AssemblyProduct( "UnitTest" )]
-[assembly: AssemblyCopyright( "Copyright © 2008-2009 Sequanto A/S" )]
+[assembly: AssemblyProduct( "vt100render" )]
+[assembly: AssemblyCopyright( "Copyright © 2009 Sequanto A/S" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible( false )]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid( "9a0b523b-561c-4188-aabe-0a87bc15c9ea" )]
+[assembly: Guid( "b8e9cadd-6820-4e99-a9c6-89cd5b7f2064" )]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion( "1.0.0.0" )]
-[assembly: AssemblyFileVersion( "1.0.0.0" )]
+[assembly: AssemblyVersion( "0.1.0.0" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
