@@ -17,6 +17,7 @@
         <include name="System.Collections.dll" />
         <include name="System.Collections.Generic.dll" />
         <include name="System.Drawing.dll" />
+        <include name="System.Windows.Forms.dll" />
       </references>
     </csc>
   </target>
@@ -33,7 +34,7 @@
         <include name="System.Collections.Generic.dll" />
         <include name="System.Drawing.dll" />
         <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.framework.dll" />
-        <include name="c:\\programmer\\nunit 2.4.8\\bin\\nunit.core.dll" />
+        <include name="/usr/lib/cli/nunit.framework-2.5/nunit.framework.dll" />
       </references>
 <!--
       <pkg-references>
